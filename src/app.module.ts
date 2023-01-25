@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { Global, Logger, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
@@ -10,6 +10,7 @@ import { Profile } from './user/profile.entity'
 import { Logs } from './logs/logs.entity'
 import { Roles } from './roles/roles.entity'
 
+@Global()
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,13 +28,14 @@ import { Roles } from './roles/roles.entity'
         database: 'test',
         entities: [User, Profile, Logs, Roles],
         synchronize: true,
-        logging: true,
-        // logging: ['error'],
+        // logging: true,
+        logging: ['error'],
       }),
     }),
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, Logger],
+  exports: [Logger],
 })
 export class AppModule {}

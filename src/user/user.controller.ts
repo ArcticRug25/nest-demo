@@ -1,14 +1,20 @@
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { ConfigEnum } from '../enum/config.enum'
 import { UserService } from './user.service'
 
 @Controller('user')
 export class UserController {
-  constructor(private configService: ConfigService, private userService: UserService) {}
+  constructor(private configService: ConfigService, private userService: UserService, private logger: Logger) {
+    this.logger.log('UserController init')
+  }
 
   @Get()
   async getUser() {
+    this.logger.log('请求getUser成功')
+    this.logger.warn('请求getUser成功')
+    this.logger.error('请求getUser成功')
+    this.logger.debug('请求getUser成功')
+    this.logger.verbose('请求getUser成功')
     return await this.userService.findAll()
   }
 

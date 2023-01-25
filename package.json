@@ -10,7 +10,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "dev": "nest start --watch",
+    "dev": "cross-env NODE_ENV=development nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -31,10 +31,17 @@
     "js-yaml": "^4.1.0",
     "mongoose": "^6.8.4",
     "mysql2": "^3.0.1",
+    "nest-winston": "^1.8.0",
+    "nestjs-pino": "^3.1.2",
+    "pino-http": "^8.3.1",
+    "pino-pretty": "^9.1.1",
+    "pino-roll": "1.0.0-rc.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.11"
+    "typeorm": "^0.3.11",
+    "winston": "^3.8.2",
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.1",
