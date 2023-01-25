@@ -9,6 +9,7 @@ import { User } from './user/user.entity'
 import { Profile } from './user/profile.entity'
 import { Logs } from './logs/logs.entity'
 import { Roles } from './roles/roles.entity'
+import { LogsModule } from './logs/logs.module'
 
 @Global()
 @Module({
@@ -32,10 +33,11 @@ import { Roles } from './roles/roles.entity'
         logging: ['error'],
       }),
     }),
+    LogsModule,
     UserModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, Logger],
+  // controllers: [AppController],
+  providers: [Logger],
   exports: [Logger],
 })
 export class AppModule {}
