@@ -1,4 +1,14 @@
 export enum ConfigEnum {
   DB = 'DB',
-  DB_HOST = 'DB_HOST',
+  LOG = 'LOG',
+}
+
+export enum DBConfigEnum {
+  type = 'type',
+  host = 'host',
+  name = 'name',
+  password = 'password',
+  database = 'database',
+  synchronize = 'synchronize',
+  port = 'port',
 }

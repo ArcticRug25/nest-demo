@@ -1,10 +1,22 @@
-import { join } from 'path'
+import * as path from 'path'
 import * as yaml from 'js-yaml'
 import { readFileSync } from 'fs'
 
-const YAML_CONFIG_FILENAME = 'config.yml'
-const filePath = join(process.cwd(), './config', YAML_CONFIG_FILENAME)
+// 获取项目运行环境
+export const getEnv = () => {
+  return process.env.NODE_ENV
+}
 
-export default () => {
-  return yaml.load(readFileSync(filePath, 'utf8'))
+// 读取项目配置
+export const getConfig = <T>(type?: string): T => {
+  const environment = getEnv()
+  const yamlPath = path.join(process.cwd(), `./.config/.${environment}.yaml`)
+  const file = readFileSync(yamlPath, 'utf8')
+  const config: any = yaml.load(file)
+
+  if (type) {
+    return config[type]
+  }
+
+  return config
 }

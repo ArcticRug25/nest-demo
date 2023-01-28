@@ -1,42 +1,22 @@
 import { Global, Logger, Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
-import configuration from './common/configuration'
-import { UserModule } from './user/user.module'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { User } from './user/user.entity'
-import { Profile } from './user/profile.entity'
-import { Logs } from './logs/logs.entity'
-import { Roles } from './roles/roles.entity'
+import { ConfigModule } from '@nestjs/config'
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
+import { connectionParams } from '../ormconfig'
+import { getConfig } from './common/configuration'
 import { LogsModule } from './logs/logs.module'
+import { UserModule } from './user/user.module'
 
 @Global()
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [configuration],
+      load: [getConfig],
     }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        host: 'localhost',
-        username: 'root',
-        password: 'wyw123456',
-        database: 'test',
-        entities: [User, Profile, Logs, Roles],
-        synchronize: true,
-        // logging: true,
-        logging: ['error'],
-      }),
-    }),
+    TypeOrmModule.forRoot(connectionParams as TypeOrmModuleOptions),
     LogsModule,
     UserModule,
   ],
-  // controllers: [AppController],
   providers: [Logger],
   exports: [Logger],
 })
