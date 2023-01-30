@@ -2,7 +2,7 @@ import { DataSource, DataSourceOptions } from 'typeorm'
 import { getConfig, getEnv } from './src/common/configuration'
 import { ConfigEnum, DBConfigEnum } from './src/enum/config.enum'
 
-const entitiesDir = getEnv() === 'dev' ? [__dirname + '/**/*.entity.ts'] : [__dirname + '/**/*.entity{.js,.ts}']
+const entitiesDir = getEnv() === 'dev' ? [__dirname + '/**/*.entity.js'] : [__dirname + '/**/*.entity{.js,.ts}']
 
 function buildConnectionParamsByEnv() {
   const dbParams = getConfig(ConfigEnum.DB)
@@ -20,6 +20,7 @@ function buildConnectionParamsByEnv() {
 }
 
 export const connectionParams = buildConnectionParamsByEnv()
+console.log('🚀 ~ file: ormconfig.ts:23 ~ connectionParams', connectionParams)
 
 export default new DataSource({
   ...connectionParams,
