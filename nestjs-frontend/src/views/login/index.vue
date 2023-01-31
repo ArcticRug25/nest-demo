@@ -1,8 +1,18 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { computed, reactive } from 'vue'
 import axios from '@/utils/axios'
 
-const loginInfo = reactive({ username: '', password: '', usernameMsg: '', passwordMsg: '' })
+const loginInfo = reactive({
+  username: '',
+  password: '',
+  usernameMsg: '',
+  passwordMsg: computed(() => {
+    if (loginInfo.password !== '' && loginInfo.password.length < 6)
+      return '密码的长度不能小于6位'
+
+    return ''
+  }),
+})
 const submit = () => {
 
 }
