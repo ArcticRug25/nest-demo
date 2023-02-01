@@ -3,7 +3,7 @@ import type { PropType } from 'vue'
 import { useRouter } from 'vue-router'
 import type { MenuItem } from './types/SidebarNav'
 
-const props = defineProps({
+defineProps({
   menus: {
     type: Array as PropType<Array<MenuItem>>,
     default: () => [] as MenuItem[],
@@ -29,15 +29,6 @@ function getIcon(item: MenuItem) {
           <i class="pe-3 text-light" :class="[getIcon(item)]" />{{ item.name }}
         </router-link>
       </li>
-      <!-- <li class="nav-item">
-        <router-link class="nav-link" :to="{name: 'users'}">用户管理</router-link>
-      </li>
-      <li class="nav-item">
-        <router-link class="nav-link" :to="{name: 'roles'}">角色管理</router-link>
-      </li>
-      <li class="nav-item">
-        <router-link class="nav-link" :to="{name: 'menus'}" tabindex="-1" aria-disabled="true">菜单管理</router-link>
-      </li> -->
     </ul>
   </div>
 </template>

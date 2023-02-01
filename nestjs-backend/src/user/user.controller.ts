@@ -1,7 +1,8 @@
-import { Controller, Get, Inject, LoggerService } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Inject, LoggerService, Param, Patch, Post, Query, Req } from '@nestjs/common'
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston'
 import { ConfigService } from '@nestjs/config'
 import { UserService } from './user.service'
+import { UserQuery } from './dto/get-user.dto'
 
 @Controller('user')
 export class UserController {
@@ -14,17 +15,37 @@ export class UserController {
   }
 
   @Get()
-  async getUser() {
-    // this.logger.log('请求getUser成功')
-    // this.logger.warn('请求getUser成功')
-    // this.logger.error('请求getUser成功')
-    // this.logger.debug('请求getUser成功')
-    // this.logger.verbose('请求getUser成功')
-    return await this.userService.findAll()
+  async getUsers(@Query() query: UserQuery) {
+    console.log('🚀 ~ file: user.controller.ts:26 ~ UserController ~ getUsers ~ query', query)
+
+    return await this.userService.findAll(query)
+  }
+
+  @Get('/info/:id')
+  getUser(@Param('id') id: number): any {
+    return 'hello'
+  }
+
+  @Post()
+  addUser(@Body() dto: any, @Req() req): any {
+    console.log('🚀 ~ file: user.controller.ts:28 ~ UserController ~ addUser ~ req', req)
+    console.log('🚀 ~ file: user.controller.ts:28 ~ UserController ~ addUser ~ dto', dto)
+  }
+
+  @Patch('/:id')
+  updateUser(@Body() dto: any, @Param('idsxxx') id: number) {
+    console.log('🚀 ~ file: user.controller.ts:33 ~ UserController ~ updateUser ~ id', id)
+    console.log('🚀 ~ file: user.controller.ts:33 ~ UserController ~ updateUser ~ dto', dto)
+  }
+
+  @Delete('/:id')
+  deleteUser(@Param('id') id: number) {
+    console.log('🚀 ~ file: user.controller.ts:39 ~ UserController ~ deleteUser ~ id', id)
   }
 
   @Get('/profile')
-  getUserProfile() {
+  getUserProfile(@Query() query: any) {
+    console.log('🚀 ~ file: user.controller.ts:45 ~ UserController ~ getUserProfile ~ query', query)
     return this.userService.findProfile(2)
   }
 

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { User } from './user.entity'
 import { Logs } from '../logs/logs.entity'
+import { UserQuery } from './dto/get-user.dto'
 // import { Logger } from 'nestjs-pino'
 
 @Injectable()
@@ -16,8 +17,41 @@ export class UserService {
     return this.userRepo.findOne({ where: { id } })
   }
 
-  findAll() {
-    return this.userRepo.find()
+  findAll(query: UserQuery) {
+    const { limit, page, gender, role, username } = query
+    const take = limit || 10
+    const skip = ((page || 1) - 1) * take
+    return this.userRepo.find({
+      select: {
+        id: true,
+        username: true,
+        profile: {
+          gender: true,
+        },
+      },
+      relations: {
+        profile: true,
+        roles: true,
+      },
+      // join: {
+      //   alias: 'user',
+      //   leftJoinAndSelect: {
+      //     profile: 'user.profile',
+      //     roles: 'user.roles',
+      //   },
+      // },
+      take,
+      skip,
+      where: {
+        username,
+        profile: {
+          gender,
+        },
+        roles: {
+          id: role,
+        },
+      },
+    })
   }
 
   findProfile(id: number) {
