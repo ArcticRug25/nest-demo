@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@antfu/eslint-config': ^0.35.1
   '@popperjs/core': ^2.11.6
+  '@types/bootstrap': ^5.2.6
   '@types/lodash-es': ^4.17.6
   '@types/node': ^18.11.18
   '@vitejs/plugin-vue': ^4.0.0
@@ -30,6 +31,7 @@ dependencies:
 
 devDependencies:
   '@antfu/eslint-config': 0.35.1_zkdaqh7it7uc4cvz2haft7rc6u
+  '@types/bootstrap': 5.2.6
   '@types/node': 18.11.18
   '@vitejs/plugin-vue': 4.0.0_vite@4.0.4+vue@3.2.45
   eslint: 8.33.0
@@ -443,7 +445,12 @@ packages:
 
   /@popperjs/core/2.11.6:
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
-    dev: false
+
+  /@types/bootstrap/5.2.6:
+    resolution: {integrity: sha512-BlAc3YATdasbHoxMoBWODrSF6qwQO/E9X8wVxCCSa6rWjnaZfpkr2N6pUMCY6jj2+wf0muUtLySbvU9etX6YqA==}
+    dependencies:
+      '@popperjs/core': 2.11.6
+    dev: true
 
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}

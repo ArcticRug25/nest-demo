@@ -1,4 +1,14 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  AfterInsert,
+  AfterRemove,
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 import { Logs } from '../logs/logs.entity'
 import { Roles } from '../roles/roles.entity'
 import { Profile } from './profile.entity'
@@ -14,7 +24,9 @@ export class User {
   @Column()
   password: string
 
-  @OneToOne(() => Profile, (profile) => profile.user)
+  @OneToOne(() => Profile, (profile) => profile.user, {
+    cascade: true,
+  })
   profile: Profile
 
   @OneToMany(() => Logs, (logs) => logs.user)
@@ -23,4 +35,15 @@ export class User {
   @ManyToMany(() => Roles, (role) => role.users)
   @JoinTable({ name: 'users_roles' })
   roles: Roles[]
+
+  @AfterInsert()
+  afterInsert() {
+    console.log('🚀 ~ file: user.entity.ts:39 ~ User ~ afterInsert', 'afterInsert')
+  }
+
+  @AfterRemove()
+  afterRemove() {
+    console.log('this', this)
+    console.log('🚀 ~ file: user.entity.ts:44 ~ User ~ afterRemove', this.username, this.id)
+  }
 }

@@ -91,12 +91,26 @@ export class UserService {
     const user = await this.findOne(id)
     return this.logsRepo.find({
       where: {
-        user,
+        user: user.logs,
       },
       relations: {
         user: true,
       },
     })
+  }
+
+  async remove(id: number) {
+    const user = await this.findOne(id)
+    return this.userRepo.remove(user)
+  }
+
+  async update(id: any, userDto: Partial<User>) {
+    const userTemp = await this.findProfile(id)
+    const newUser = this.userRepo.merge(userTemp, userDto)
+    // 联合模型更新，需要使用 save 方法或者 queryBuilder
+    return this.userRepo.save(newUser)
+    // 下面的 update 方法，只适合单模型的更新，不适合有关系的模型更新
+    return this.userRepo.update(id, userDto)
   }
 
   findLogsByGroup(id: number) {

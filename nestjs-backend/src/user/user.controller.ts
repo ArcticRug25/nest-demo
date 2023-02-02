@@ -3,25 +3,26 @@ import {
   Controller,
   Delete,
   Get,
+  Headers,
   Inject,
   LoggerService,
   Param,
   Patch,
   Post,
   Query,
+  UnauthorizedException,
   UseFilters,
 } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston'
 import { TypeormFilter } from '../filters/typeorm.filter'
 import { UserQuery } from './dto/get-user.dto'
+import { User } from './user.entity'
 import { UserService } from './user.service'
 
 @Controller('user')
 @UseFilters(new TypeormFilter())
 export class UserController {
   constructor(
-    private configService: ConfigService,
     private userService: UserService,
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: LoggerService,
   ) {
@@ -46,14 +47,23 @@ export class UserController {
   }
 
   @Patch('/:id')
-  updateUser(@Body() dto: any, @Param('idsxxx') id: number) {
-    console.log('🚀 ~ file: user.controller.ts:33 ~ UserController ~ updateUser ~ id', id)
-    console.log('🚀 ~ file: user.controller.ts:33 ~ UserController ~ updateUser ~ dto', dto)
+  updateUser(@Body() dto: any, @Param('idsxxx') id: number, @Headers('Authorization') headers: any) {
+    console.log('🚀 ~ file: user.controller.ts:50 ~ UserController ~ updateUser ~ headers', headers)
+    // TODO
+    // 权限1：判断用户是否是自己
+    // 权限2：判断用户是否有更新user的权限
+    // 返回数据：不能包含敏感的password等信息
+    if (headers === id) {
+      const user = dto as User
+      return this.userService.update(id, user)
+    } else {
+      throw new UnauthorizedException()
+    }
   }
 
   @Delete('/:id')
-  deleteUser(@Param('id') id: number) {
-    console.log('🚀 ~ file: user.controller.ts:39 ~ UserController ~ deleteUser ~ id', id)
+  removeUser(@Param('id') id: number) {
+    this.userService.remove(id)
   }
 
   @Get('/profile')
