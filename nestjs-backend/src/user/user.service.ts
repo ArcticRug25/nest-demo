@@ -5,6 +5,7 @@ import { User } from './user.entity'
 import { Logs } from '../logs/logs.entity'
 import { UserQuery } from './dto/get-user.dto'
 // import { Logger } from 'nestjs-pino'
+import { conditionUtils } from '../utils/db.helper'
 
 @Injectable()
 export class UserService {
@@ -21,37 +22,52 @@ export class UserService {
     const { limit, page, gender, role, username } = query
     const take = limit || 10
     const skip = ((page || 1) - 1) * take
-    return this.userRepo.find({
-      select: {
-        id: true,
-        username: true,
-        profile: {
-          gender: true,
-        },
-      },
-      relations: {
-        profile: true,
-        roles: true,
-      },
-      // join: {
-      //   alias: 'user',
-      //   leftJoinAndSelect: {
-      //     profile: 'user.profile',
-      //     roles: 'user.roles',
-      //   },
-      // },
-      take,
-      skip,
-      where: {
-        username,
-        profile: {
-          gender,
-        },
-        roles: {
-          id: role,
-        },
-      },
-    })
+    // return this.userRepo.find({
+    //   select: {
+    //     id: true,
+    //     username: true,
+    //     profile: {
+    //       gender: true,
+    //     },
+    //   },
+    //   relations: {
+    //     profile: true,
+    //     roles: true,
+    //   },
+    //   // join: {
+    //   //   alias: 'user',
+    //   //   leftJoinAndSelect: {
+    //   //     profile: 'user.profile',
+    //   //     roles: 'user.roles',
+    //   //   },
+    //   // },
+    //   take,
+    //   skip,
+    //   where: {
+    //     username,
+    //     profile: {
+    //       gender,
+    //     },
+    //     roles: {
+    //       id: role,
+    //     },
+    //   },
+    // })
+
+    const obj = {
+      'user.username': username,
+      'profile.gender': gender,
+      'roles.id': role,
+    }
+
+    const queryBuilder = this.userRepo
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.profile', 'profile')
+      .leftJoinAndSelect('user.roles', 'roles')
+
+    const newQueryBuilder = conditionUtils<User>(queryBuilder, obj)
+
+    return newQueryBuilder.take(take).skip(skip).getMany()
   }
 
   findProfile(id: number) {
@@ -63,6 +79,12 @@ export class UserService {
         profile: true,
       },
     })
+  }
+
+  async create(user: User) {
+    const userTmp = await this.userRepo.create(user)
+    const res = await this.userRepo.save(userTmp)
+    return res
   }
 
   async findUserLogs(id: number) {

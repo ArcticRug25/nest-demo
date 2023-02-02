@@ -1,10 +1,24 @@
-import { Body, Controller, Delete, Get, Inject, LoggerService, Param, Patch, Post, Query, Req } from '@nestjs/common'
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
+  LoggerService,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseFilters,
+} from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { UserService } from './user.service'
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston'
+import { TypeormFilter } from '../filters/typeorm.filter'
 import { UserQuery } from './dto/get-user.dto'
+import { UserService } from './user.service'
 
 @Controller('user')
+@UseFilters(new TypeormFilter())
 export class UserController {
   constructor(
     private configService: ConfigService,
@@ -27,9 +41,8 @@ export class UserController {
   }
 
   @Post()
-  addUser(@Body() dto: any, @Req() req): any {
-    console.log('🚀 ~ file: user.controller.ts:28 ~ UserController ~ addUser ~ req', req)
-    console.log('🚀 ~ file: user.controller.ts:28 ~ UserController ~ addUser ~ dto', dto)
+  async addUser(@Body() userDto: any) {
+    return await this.userService.create(userDto)
   }
 
   @Patch('/:id')
