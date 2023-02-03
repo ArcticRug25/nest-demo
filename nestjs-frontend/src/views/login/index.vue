@@ -14,7 +14,7 @@ const loginInfo = reactive({
   }),
 })
 const submit = () => {
-
+  // console.log('args', args)
 }
 const data = await axios.get('/user')
 // console.log('🚀 ~ file: index.vue:4 ~ data', data)

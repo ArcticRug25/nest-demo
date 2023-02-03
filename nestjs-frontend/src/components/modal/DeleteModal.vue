@@ -7,7 +7,7 @@ const _props = defineProps({
     default: false,
   },
 })
-const emit = defineEmits(['delete'])
+const emit = defineEmits(['delete', 'update:show'])
 const { show } = toRefs(_props)
 
 const { modalRef: deleteRef, hide } = useModal(show, 'show')

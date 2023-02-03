@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import axios from '@/utils/axios'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
 import EditAddModal from '@/components/modal/EditAddModal.vue'
@@ -17,14 +17,14 @@ interface RoleItem {
 }
 
 interface UserItem {
-  id: number
+  id?: number
   username: string
   profile: Profile
   roles: RoleItem[]
 }
 
 const lists = ref<UserItem[]>([])
-const tmpItem = ref({})
+const tmpItem = ref<UserItem>({} as UserItem)
 const deleteShow = ref(false)
 const editShow = ref(false)
 // 模态框的控制handler
@@ -103,12 +103,27 @@ const formSchema = [
     },
   },
 ] as FormItem[]
+const formValue = reactive({
+  username: '',
+  password: '',
+  profile: {
+    gender: 0,
+    address: '',
+    photo: '',
+  } as Profile,
+  roles: [] as RoleItem[],
+} as UserItem)
+
 let localType = ''
 
-onMounted(async () => {
+const getData = async () => {
   const res = await axios.get('/user') as UserItem[]
   if (res?.length > 0)
     lists.value = res
+}
+
+onMounted(async () => {
+  await getData()
 })
 
 // 控制模态框
@@ -131,14 +146,35 @@ const openModal = (type: string, item?: UserItem) => {
 }
 
 const editSubmit = async (val: any) => {
+  if (localType === 'add') {
+    const res = await axios.post('/user', val)
+    console.log('🚀 ~ file: index.vue:136 ~ editSubmit ~ res', res)
+    Object.assign(formValue, {
+      username: '',
+      password: '',
+      profile: {
+        gender: 0,
+        address: '',
+        photo: '',
+      },
+      roles: [],
+    } as typeof formValue)
+  }
+  editShow.value = false
+  await getData()
 }
 
 // 删除该条数据
 const deleteSubmit = async () => {
   // 1.获取用户删除的item -> id
+  const id = tmpItem.value.id
   // 2.发送删除请求
-
+  const res: UserItem = await axios.delete(`/user/${id}`)
   // 获取新的列表数据并更新
+  if (res.username === tmpItem.value.username)
+    deleteShow.value = false
+
+  await getData()
 }
 </script>
 

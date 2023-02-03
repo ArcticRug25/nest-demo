@@ -20,8 +20,7 @@ const _props = defineProps({
     default: () => [],
   },
 })
-const emit = defineEmits(['submit'])
-
+const emit = defineEmits(['submit', 'update:show'])
 const { show } = toRefs(_props)
 const formRef = ref()
 

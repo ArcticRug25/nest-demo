@@ -29,10 +29,12 @@ export class User {
   })
   profile: Profile
 
-  @OneToMany(() => Logs, (logs) => logs.user)
+  @OneToMany(() => Logs, (logs) => logs.user, {
+    cascade: true,
+  })
   logs: Logs[]
 
-  @ManyToMany(() => Roles, (role) => role.users)
+  @ManyToMany(() => Roles, (role) => role.users, { cascade: true })
   @JoinTable({ name: 'users_roles' })
   roles: Roles[]
 

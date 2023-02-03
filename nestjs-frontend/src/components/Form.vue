@@ -28,6 +28,8 @@ export default {
       return Math.random().toString(36).substring(2)
     }
 
+    const profileProp = ['gender', 'address', 'photo']
+
     const model = ref<any>({
       ...cloneDeep(
         _props.schema.reduce((prev, cur) => {

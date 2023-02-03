@@ -63,7 +63,7 @@ export class UserController {
 
   @Delete('/:id')
   removeUser(@Param('id') id: number) {
-    this.userService.remove(id)
+    return this.userService.remove(id)
   }
 
   @Get('/profile')
