@@ -83,7 +83,11 @@ export class UserService {
     })
   }
 
-  async create(user: User) {
+  async create(user: Partial<User>) {
+    if (!user.roles) {
+      const role = await this.rolesRepo.findOne({ where: { id: 2 } })
+      user.roles = [role]
+    }
     if (Array.isArray(user.roles) && typeof user.roles[0] === 'number') {
       // 查询所有用户角色
       user.roles = await this.rolesRepo.find({
@@ -92,6 +96,7 @@ export class UserService {
         },
       })
     }
+
     const userTmp = await this.userRepo.create(user)
     const res = await this.userRepo.save(userTmp)
     return res

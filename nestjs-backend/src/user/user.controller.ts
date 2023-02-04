@@ -7,6 +7,7 @@ import {
   Inject,
   LoggerService,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -67,9 +68,8 @@ export class UserController {
   }
 
   @Get('/profile')
-  getUserProfile(@Query() query: any) {
-    console.log('🚀 ~ file: user.controller.ts:45 ~ UserController ~ getUserProfile ~ query', query)
-    return this.userService.findProfile(2)
+  getUserProfile(@Query('id', ParseIntPipe) id: any) {
+    return this.userService.findProfile(id)
   }
 
   @Get('/logs')

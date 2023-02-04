@@ -5,6 +5,7 @@ import { connectionParams } from '../ormconfig'
 import { getConfig } from './common/configuration'
 import { LogsModule } from './logs/logs.module'
 import { UserModule } from './user/user.module'
+import { AuthModule } from './auth/auth.module';
 
 @Global()
 @Module({
@@ -16,6 +17,7 @@ import { UserModule } from './user/user.module'
     TypeOrmModule.forRoot(connectionParams as TypeOrmModuleOptions),
     LogsModule,
     UserModule,
+    AuthModule,
   ],
   providers: [Logger],
   exports: [Logger],
