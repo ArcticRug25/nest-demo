@@ -7,6 +7,7 @@ import { UserQuery } from './dto/get-user.dto'
 // import { Logger } from 'nestjs-pino'
 import { conditionUtils } from '../utils/db.helper'
 import { Roles } from '../roles/roles.entity'
+import { CreateUserDto } from './dto/create-user.dto'
 
 @Injectable()
 export class UserService {
@@ -83,7 +84,7 @@ export class UserService {
     })
   }
 
-  async create(user: Partial<User>) {
+  async create(user: Partial<CreateUserDto>) {
     if (!user.roles) {
       const role = await this.rolesRepo.findOne({ where: { id: 2 } })
       user.roles = [role]
@@ -92,12 +93,12 @@ export class UserService {
       // 查询所有用户角色
       user.roles = await this.rolesRepo.find({
         where: {
-          id: In(user.roles),
+          id: In(user.roles as number[]),
         },
       })
     }
 
-    const userTmp = await this.userRepo.create(user)
+    const userTmp = await this.userRepo.create(user as User)
     const res = await this.userRepo.save(userTmp)
     return res
   }

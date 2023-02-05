@@ -19,6 +19,8 @@ import { TypeormFilter } from '../filters/typeorm.filter'
 import { UserQuery } from './dto/get-user.dto'
 import { User } from './user.entity'
 import { UserService } from './user.service'
+import { CreateUserPipe } from './pipes/create-user.pipe'
+import { CreateUserDto } from './dto/create-user.dto'
 
 @Controller('user')
 @UseFilters(new TypeormFilter())
@@ -43,7 +45,7 @@ export class UserController {
   }
 
   @Post()
-  async addUser(@Body() userDto: any) {
+  async addUser(@Body(CreateUserPipe) userDto: CreateUserDto) {
     return await this.userService.create(userDto)
   }
 
