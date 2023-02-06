@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer'
 import {
   AfterInsert,
   AfterRemove,
@@ -22,6 +23,7 @@ export class User {
   username: string
 
   @Column()
+  @Exclude()
   password: string
 
   @OneToOne(() => Profile, (profile) => profile.user, {

@@ -16,7 +16,7 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       // 去除在类上不存在的内容
-      // whitelist: true
+      whitelist: true,
     }),
   )
 

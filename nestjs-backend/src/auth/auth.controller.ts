@@ -1,7 +1,7 @@
-import { SigninUserDto } from './dto/signin-user.dto'
-import { Body, Controller, Post, UseFilters } from '@nestjs/common'
+import { Body, ClassSerializerInterceptor, Controller, Post, UseFilters, UseInterceptors } from '@nestjs/common'
 import { TypeormFilter } from 'src/filters/typeorm.filter'
 import { AuthService } from './auth.service'
+import { SigninUserDto } from './dto/signin-user.dto'
 
 @Controller('auth')
 @UseFilters(new TypeormFilter())
@@ -18,6 +18,7 @@ export class AuthController {
   }
 
   @Post('/signup')
+  @UseInterceptors(ClassSerializerInterceptor)
   signup(@Body() dto: SigninUserDto) {
     const { username, password } = dto
     return this.authService.signup(username, password)
