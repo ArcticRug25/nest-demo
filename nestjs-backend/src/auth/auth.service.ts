@@ -1,20 +1,35 @@
-import { Injectable, HttpException } from '@nestjs/common'
-import { UserQuery } from 'src/user/dto/get-user.dto'
+import { ForbiddenException, HttpException, Injectable, UnauthorizedException } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
+import * as argon2 from 'argon2'
 import { UserService } from '../user/user.service'
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService, private readonly jwtService: JwtService) {}
 
   async signin(username: string, password: string) {
-    const res = await this.userService.findAll({ username } as UserQuery)
-    return res
+    const user = await this.userService.find(username)
+    if (!user) {
+      throw new ForbiddenException('用户不存在，请注册')
+    }
+
+    const isPasswordValid = await argon2.verify(user.password, password)
+    if (!isPasswordValid) {
+      throw new ForbiddenException('用户名或者密码错误')
+    }
+
+    return await this.jwtService.signAsync({
+      username: user.username,
+      sub: user.id,
+    })
   }
 
   async signup(username: string, password: string) {
-    if (!username || !password) {
-      throw new HttpException('用户名或密码不能为空', 400)
+    const user = await this.userService.find(username)
+    if (user) {
+      throw new ForbiddenException('用户已存在')
     }
+
     const res = await this.userService.create({
       username,
       password,

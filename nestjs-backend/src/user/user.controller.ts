@@ -11,8 +11,10 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   UnauthorizedException,
   UseFilters,
+  UseGuards,
 } from '@nestjs/common'
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston'
 import { TypeormFilter } from '../filters/typeorm.filter'
@@ -21,6 +23,9 @@ import { User } from './user.entity'
 import { UserService } from './user.service'
 import { CreateUserPipe } from './pipes/create-user.pipe'
 import { CreateUserDto } from './dto/create-user.dto'
+import { AuthGuard } from '@nestjs/passport'
+import { AdminGuard } from '../guards/admin.guard'
+import { JwtGuard } from '../guards/jwt.guard'
 
 @Controller('user')
 @UseFilters(new TypeormFilter())
@@ -70,7 +75,10 @@ export class UserController {
   }
 
   @Get('/profile')
-  getUserProfile(@Query('id', ParseIntPipe) id: any) {
+  @UseGuards(AdminGuard)
+  @UseGuards(JwtGuard)
+  getUserProfile(@Query('id', ParseIntPipe) id: any, @Req() req) {
+    console.log('🚀 ~ file: user.controller.ts:78 ~ UserController ~ getUserProfile ~ req', req.user)
     return this.userService.findProfile(id)
   }
 

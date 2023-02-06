@@ -1,6 +1,7 @@
 export enum ConfigEnum {
   DB = 'DB',
   LOG = 'LOG',
+  SECRET = 'SECRET',
 }
 
 export enum DBConfigEnum {

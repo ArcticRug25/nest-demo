@@ -1,5 +1,5 @@
-import * as path from 'path'
-import * as yaml from 'js-yaml'
+import path from 'path'
+import yaml from 'js-yaml'
 import { readFileSync } from 'fs'
 
 // 获取项目运行环境

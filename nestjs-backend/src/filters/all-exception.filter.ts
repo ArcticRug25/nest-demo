@@ -8,7 +8,7 @@ import {
   LoggerService,
 } from '@nestjs/common'
 import { Request, Response } from 'express'
-import * as requestIp from 'request-ip'
+import requestIp from 'request-ip'
 import { QueryFailedError } from 'typeorm'
 
 @Catch()

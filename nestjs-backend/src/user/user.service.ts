@@ -8,6 +8,7 @@ import { UserQuery } from './dto/get-user.dto'
 import { conditionUtils } from '../utils/db.helper'
 import { Roles } from '../roles/roles.entity'
 import { CreateUserDto } from './dto/create-user.dto'
+import argon2 from 'argon2'
 
 @Injectable()
 export class UserService {
@@ -16,6 +17,10 @@ export class UserService {
     @InjectRepository(Logs) private readonly logsRepo: Repository<Logs>, // private logger: Logger,
     @InjectRepository(Roles) private readonly rolesRepo: Repository<Roles>,
   ) {}
+
+  find(username: string) {
+    return this.userRepo.findOne({ where: { username }, relations: ['roles'] })
+  }
 
   findOne(id: number) {
     return this.userRepo.findOne({ where: { id } })
@@ -99,6 +104,7 @@ export class UserService {
     }
 
     const userTmp = await this.userRepo.create(user as User)
+    userTmp.password = await argon2.hash(userTmp.password)
     const res = await this.userRepo.save(userTmp)
     return res
   }

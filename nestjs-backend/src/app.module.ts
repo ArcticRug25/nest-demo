@@ -5,7 +5,7 @@ import { connectionParams } from '../ormconfig'
 import { getConfig } from './common/configuration'
 import { LogsModule } from './logs/logs.module'
 import { UserModule } from './user/user.module'
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth/auth.module'
 
 @Global()
 @Module({

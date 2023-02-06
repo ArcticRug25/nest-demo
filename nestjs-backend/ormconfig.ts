@@ -14,13 +14,12 @@ function buildConnectionParamsByEnv() {
     database: dbParams[DBConfigEnum.database],
     entities: entitiesDir,
     synchronize: dbParams[DBConfigEnum.synchronize],
-    logging: true,
-    // logging: ['error'],
+    // logging: true,
+    logging: ['error'],
   }
 }
 
 export const connectionParams = buildConnectionParamsByEnv()
-console.log('🚀 ~ file: ormconfig.ts:23 ~ connectionParams', connectionParams)
 
 export default new DataSource({
   ...connectionParams,
