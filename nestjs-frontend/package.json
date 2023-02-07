@@ -15,6 +15,7 @@
     "bootstrap": "^5.2.3",
     "lodash-es": "^4.17.21",
     "pinia": "^2.0.29",
+    "pinia-plugin-persistedstate": "^3.0.2",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },

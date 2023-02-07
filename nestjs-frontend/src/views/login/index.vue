@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue'
-import axios from '@/utils/axios'
+import { useRouter } from 'vue-router'
+import { signin } from '../../api/login'
+import { useUserStore } from '@/store/user'
+
+interface LoginResponse {
+  access_token: string
+}
+
+const router = useRouter()
+const userStore = useUserStore()
 
 const loginInfo = reactive({
   username: '',
@@ -13,10 +22,16 @@ const loginInfo = reactive({
     return ''
   }),
 })
-const submit = () => {
-  // console.log('args', args)
+const submit = async () => {
+  const { username, password } = loginInfo
+  const res = await signin(username, password) as unknown as LoginResponse
+  if (res.access_token) {
+    userStore.$patch({
+      token: res.access_token,
+    })
+  }
+  router.push({ name: 'home' })
 }
-const data = await axios.get('/user')
 // console.log('🚀 ~ file: index.vue:4 ~ data', data)
 </script>
 

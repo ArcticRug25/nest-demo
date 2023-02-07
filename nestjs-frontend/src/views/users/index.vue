@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
+import { getUsers } from '@/api/users'
 import axios from '@/utils/axios'
 import DeleteModal from '@/components/modal/DeleteModal.vue'
 import EditAddModal from '@/components/modal/EditAddModal.vue'
@@ -117,7 +118,7 @@ const formValue = reactive({
 let localType = ''
 
 const getData = async () => {
-  const res = await axios.get('/user') as UserItem[]
+  const res = await getUsers() as unknown as UserItem[]
   if (res?.length > 0)
     lists.value = res
 }

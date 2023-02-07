@@ -1,7 +1,7 @@
 import axios from 'axios'
-// import { useUserStore } from '@/store/user'
+import { useUserStore } from '@/store/user'
 
-// const store = useUserStore()
+const store = useUserStore()
 
 const instance = axios.create({
   baseURL: '/api',
@@ -12,8 +12,8 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     // 在发送请求之前做些什么
-    // if (store.token)
-    //   config.headers!.Authorization = `Bearer ${store.token}`
+    if (store.token)
+      config.headers!.Authorization = `Bearer ${store.token}`
 
     return config
   },
