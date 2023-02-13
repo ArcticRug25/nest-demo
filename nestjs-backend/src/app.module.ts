@@ -6,6 +6,8 @@ import { getConfig } from './common/configuration'
 import { LogsModule } from './logs/logs.module'
 import { UserModule } from './user/user.module'
 import { AuthModule } from './auth/auth.module'
+import { RolesModule } from './roles/roles.module';
+import { MenusModule } from './menus/menus.module';
 
 @Global()
 @Module({
@@ -18,6 +20,8 @@ import { AuthModule } from './auth/auth.module'
     LogsModule,
     UserModule,
     AuthModule,
+    RolesModule,
+    MenusModule,
   ],
   providers: [Logger],
   exports: [Logger],

@@ -6,7 +6,7 @@ import { Logs } from '../logs/logs.entity'
 import { UserQuery } from './dto/get-user.dto'
 // import { Logger } from 'nestjs-pino'
 import { conditionUtils } from '../utils/db.helper'
-import { Roles } from '../roles/roles.entity'
+import { Roles } from '../roles/role.entity'
 import { CreateUserDto } from './dto/create-user.dto'
 import argon2 from 'argon2'
 

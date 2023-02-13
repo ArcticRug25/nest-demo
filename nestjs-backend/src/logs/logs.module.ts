@@ -11,7 +11,7 @@ import { LogsService } from './logs.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { User } from 'src/user/user.entity'
 import { Logs } from './logs.entity'
-import { Roles } from 'src/roles/roles.entity'
+import { Roles } from 'src/roles/role.entity'
 
 const consoleTransports = new winston.transports.Console({
   level: 'info',

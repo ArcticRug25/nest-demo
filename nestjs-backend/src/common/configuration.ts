@@ -9,7 +9,7 @@ export const getEnv = () => {
 
 // 读取项目配置
 export const getConfig = <T>(type?: string): T => {
-  const environment = getEnv()
+  const environment = getEnv() || 'dev'
   const yamlPath = path.join(process.cwd(), `./.config/.${environment}.yaml`)
   const file = readFileSync(yamlPath, 'utf8')
   const config: any = yaml.load(file)
