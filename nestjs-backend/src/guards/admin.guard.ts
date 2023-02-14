@@ -11,7 +11,7 @@ export class AdminGuard implements CanActivate {
     const payloadUser = req.user as User
     const user = await this.userService.find(payloadUser.username)
     console.log('🚀 ~ file: admin.guard.ts:14 ~ AdminGuard ~ canActivate ~ user', user)
-    if (user.roles.filter((role) => role.id === 2).length) {
+    if (user.roles.filter((role) => role.id === 1).length) {
       return true
     }
     return false

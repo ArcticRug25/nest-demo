@@ -19,7 +19,7 @@ export class UserService {
   ) {}
 
   find(username: string) {
-    return this.userRepo.findOne({ where: { username }, relations: ['roles'] })
+    return this.userRepo.findOne({ where: { username }, relations: ['roles', 'roles.menus'] })
   }
 
   findOne(id: number) {
