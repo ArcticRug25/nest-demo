@@ -1,6 +1,5 @@
-import { Injectable } from '@nestjs/common'
 import { AbilityBuilder, createMongoAbility } from '@casl/ability'
-import { Logs } from '../logs/logs.entity'
+import { Injectable } from '@nestjs/common'
 import { UserService } from '../user/user.service'
 import { getEntities } from '../utils/common'
 
@@ -8,7 +7,7 @@ import { getEntities } from '../utils/common'
 export class CaslAbilityService {
   constructor(private userService: UserService) {}
   async forRoot(username: string) {
-    const { can, cannot, build } = new AbilityBuilder(createMongoAbility)
+    const { can, build } = new AbilityBuilder(createMongoAbility)
 
     const user = await this.userService.find(username)
 
@@ -20,10 +19,6 @@ export class CaslAbilityService {
         })
       })
     })
-    console.log('🚀 ~ file: casl-ability.service.ts:13 ~ CaslAbilityService ~ forRoot ~ user', user)
-    // can('manage', 'all')
-    // can('read', Logs)
-    // cannot('update', Logs)
 
     const ability = build({
       detectSubjectType: (object) => object.constructor,
